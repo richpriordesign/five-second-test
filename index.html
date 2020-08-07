@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        .test-content,.response1-content,.response2-content,.response3content,.thanks-content{display:none;}
+        .activated{display:block; animation:fade_keyframes 0.5s}
+        @keyframes fade_keyframes {
+            0%{
+                opacity:0;
+            }
+            50%{
+                opacity:.5;
+            }
+            90%{
+                opacity:.9;
+            }
+            100%{
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 intro-content">
+                <h1>This is the test</h1>
+                <a class="activate-link" href="#">Let's get started</a>
+            </div>
+
+            <div class="col-sm-12 test-content">
+                <img class="img-fluid" src="https://sites.google.com/site/thisisjustatest2294/_/rsrc/1468742544208/project-resources/image-search/google-image-search/Screen%20Shot%202015-11-28%20at%201.14.27%20PM.png" />
+            </div>
+            <div class="col-sm-12 response1-content">
+                <h2>Question about what you just saw</h2>
+                <form name="submit-to-google-sheet">
+                    <textarea style="width:100%;" name="response1" type="text" placeholder="Write response here" required></textarea>
+                    <button class="btn-primary" type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="col-sm-12 thanks-content">
+                <h1>Thanks for testing!</h1>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('.activate-link').click(function(){
+            $('.intro-content').css('display','none');
+            $('.test-content').addClass('activated');
+            if( $('.test-content').hasClass("activated")){
+                setTimeout(
+                    function(){
+                        $('.test-content').removeClass('activated');
+                        $('.response1-content').addClass('activated');
+                    }, 5000);
+            }
+        });
+
+    </script>
+    <!-- Submit -->
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz5ak2FA-344JpvdxgUtdxlkc6pmAv3zjjR0MzfbIF0SYSegoQt/exec'
+        const form = document.forms['submit-to-google-sheet']
+        
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(
+                response => console.log('Success!', response,
+                    $('.response1-content').removeClass('activated'),
+                    $('.thanks-content').addClass('activated'),
+                )
+            )
+            .catch(
+                error => console.error('Error!', error.message),
+            )
+            
+        })
+        </script>
+    
+        <script type="text/javascript">
+            function preventBack() { window.history.forward(); }
+            setTimeout("preventBack()", 0);
+            window.onunload = function () { null };
+        </script>
+</body>
+
+</html>
